@@ -2,7 +2,7 @@
 
 A full-stack todo application built with the MERN stack (MongoDB, Express.js, React, Node.js).
 
-![Todo App Screenshot]()
+![Todo App Screenshot](https://raw.githubusercontent.com/musavirchukkan/project-images/refs/heads/main/mern-todo/dashboard.png)
 
 ## Features
 
@@ -23,7 +23,7 @@ A full-stack todo application built with the MERN stack (MongoDB, Express.js, Re
 ### Clone the repository
 
 ```bash
-git clone https://github.com/musavirchukkan/mern-todo-app.git
+git clone https://github.com/musavirchukkan/mern-todo.git
 cd mern-todo-app
 ```
 
