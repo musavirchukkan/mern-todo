@@ -5,8 +5,12 @@ const {
     getTodo,
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    getTodoStats
 } = require('../controllers/todoController');
+
+// Statistics route
+router.get('/stats', getTodoStats);
 
 // Get all todos and create todo
 router.route('/')
