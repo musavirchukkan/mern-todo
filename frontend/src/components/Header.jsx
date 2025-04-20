@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaArrowLeft } from 'react-icons/fa';
 
 const Header = () => {
     const location = useLocation();
 
     return (
         <header className="header">
-            <h1>MERN Todo App</h1>
+            <h1 className="app-title">MERN Todo App</h1>
             <div>
                 {location.pathname === '/' ? (
-                    <Link to="/add" className="btn">
-                        <FaPlus /> Add Todo
+                    <Link to="/add" className="btn btn-primary">
+                        <FaPlus className="icon-margin" /> Add Todo
                     </Link>
                 ) : (
                     <Link to="/" className="btn btn-secondary">
-                        Back to Todos
+                        <FaArrowLeft className="icon-margin" /> Back to Todos
                     </Link>
                 )}
             </div>
