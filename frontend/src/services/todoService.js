@@ -48,13 +48,30 @@ api.interceptors.response.use(
 );
 
 /**
- * Fetch all todos with optional filtering
+ * Fetch all todos with optional filtering, sorting, and pagination
  * @param {Object} params - Query parameters (optional)
- * @returns {Promise<Array>} - Array of todo objects
+ * @returns {Promise<Object>} - Todos array with pagination info
  */
 const getAllTodos = async (params = {}) => {
     try {
         const response = await api.get('', { params });
+
+        // Check if the response contains todos and pagination info (new API format)
+        if (response.data && response.data.todos && response.data.pagination) {
+            return response.data;
+        }
+
+        // If it's an older API format, it might just return an array
+        if (Array.isArray(response.data)) {
+            return response.data;
+        }
+
+        // If response.data contains success flag, return the data property
+        if (response.data && response.data.success === true && response.data.data) {
+            return response.data.data;
+        }
+
+        // Default fallback
         return response.data;
     } catch (error) {
         console.error('Error fetching todos:', error);
@@ -72,6 +89,12 @@ const getTodoById = async (id) => {
 
     try {
         const response = await api.get(`/${id}`);
+
+        // Handle new API format with success flag
+        if (response.data && response.data.success === true) {
+            return response.data.data;
+        }
+
         return response.data;
     } catch (error) {
         console.error(`Error fetching todo ${id}:`, error);
@@ -92,6 +115,12 @@ const createTodo = async (todoData) => {
 
     try {
         const response = await api.post('', todoData);
+
+        // Handle new API format with success flag
+        if (response.data && response.data.success === true) {
+            return response.data.data;
+        }
+
         return response.data;
     } catch (error) {
         console.error('Error creating todo:', error);
@@ -111,6 +140,12 @@ const updateTodo = async (id, todoData) => {
 
     try {
         const response = await api.put(`/${id}`, todoData);
+
+        // Handle new API format with success flag
+        if (response.data && response.data.success === true) {
+            return response.data.data;
+        }
+
         return response.data;
     } catch (error) {
         console.error(`Error updating todo ${id}:`, error);
@@ -131,6 +166,26 @@ const deleteTodo = async (id) => {
         return response.data;
     } catch (error) {
         console.error(`Error deleting todo ${id}:`, error);
+        throw error;
+    }
+};
+
+/**
+ * Get todo statistics
+ * @returns {Promise<Object>} - Statistics with counts by status
+ */
+const getTodoStats = async () => {
+    try {
+        const response = await api.get('/stats');
+
+        // Handle new API format with success flag
+        if (response.data && response.data.success === true) {
+            return response.data.data;
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching todo statistics:', error);
         throw error;
     }
 };
@@ -169,6 +224,7 @@ const todoService = {
     createTodo,
     updateTodo,
     deleteTodo,
+    getTodoStats,
     retryRequest
 };
 
